@@ -84,9 +84,9 @@ async function startQuiz() {
 
         // Récupérer les œuvres
         const response = await fetch(
-            `${API_BASE_URL}/${appState.category}/random_items?nb_items=${appState.itemCount}`
+            `${API_BASE_URL}/${appState.category}/random_items`
         );
-
+        // ?nb_items=${appState.itemCount}
         if (!response.ok) {
             throw new Error('Erreur lors du chargement des œuvres');
         }
@@ -149,7 +149,7 @@ async function loadCurrentQuestion() {
 
         // Charger les artistes
         // On utilise le nom de l'artiste de l'œuvre (artwork.artiste)
-        const artistName = artwork.artiste || '';
+        const artistName = artwork.nom || '';
         const response = await fetch(
             `${API_BASE_URL}/${appState.category}/random_artistes?pnom=${encodeURIComponent(artistName)}`
         );
