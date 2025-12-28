@@ -98,7 +98,12 @@ GET /artquiz_api/{Peintures|Sculptures}/random_items?nb_items={5|10}
 
 **Récupérer des artistes pour une œuvre :**
 ```
-GET /artquiz_api/{Peintures|Sculptures}/random_artistes?id_oeuvre={id}
+GET /artquiz_api/{Peintures|Sculptures}/random_artistes?pnom={nom_artiste}
+```
+
+Exemple :
+```
+GET /artquiz_api/Peintures/random_artistes?pnom=Delacroix
 ```
 
 ### Structure des données
@@ -107,11 +112,10 @@ GET /artquiz_api/{Peintures|Sculptures}/random_artistes?id_oeuvre={id}
 - `id` : Identifiant unique
 - `titre` : Titre de l'œuvre
 - `img_url` : URL de l'image
-- `id_artiste` : Identifiant de l'artiste
+- `artiste` : Nom de l'artiste auteur de l'œuvre
 - `autre` : Informations complémentaires (dimensions, etc.)
 
 **Artiste :**
-- `id_artiste` : Identifiant de l'artiste
 - `nom` : Nom de l'artiste
 
 ## Fonctionnement

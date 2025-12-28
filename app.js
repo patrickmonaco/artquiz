@@ -148,8 +148,10 @@ async function loadCurrentQuestion() {
         img.src = artwork.img_url;
 
         // Charger les artistes
+        // On utilise le nom de l'artiste de l'œuvre (artwork.artiste)
+        const artistName = artwork.artiste || '';
         const response = await fetch(
-            `${API_BASE_URL}/${appState.category}/random_artistes?id_oeuvre=${artwork.id}`
+            `${API_BASE_URL}/${appState.category}/random_artistes?pnom=${encodeURIComponent(artistName)}`
         );
 
         if (!response.ok) {
@@ -165,7 +167,7 @@ async function loadCurrentQuestion() {
         // Afficher les artistes
         shuffledArtists.forEach((artist, index) => {
             artistBtns[index].textContent = artist.nom;
-            artistBtns[index].dataset.artistId = artist.id_artiste;
+            artistBtns[index].dataset.artistName = artist.nom;
         });
 
         loadingArtists.classList.add('d-none');
@@ -181,24 +183,24 @@ async function loadCurrentQuestion() {
 function handleAnswer(buttonIndex) {
     const artwork = appState.artworks[appState.currentIndex];
     const selectedBtn = artistBtns[buttonIndex];
-    const selectedArtistId = parseInt(selectedBtn.dataset.artistId);
-    const correctArtistId = artwork.id_artiste;
-    const isCorrect = selectedArtistId === correctArtistId;
+    const selectedArtistName = selectedBtn.dataset.artistName;
+    const correctArtistName = artwork.artiste;
+    const isCorrect = selectedArtistName === correctArtistName;
 
     // Enregistrer la réponse
     appState.answers.push({
         artwork: artwork,
-        selectedArtistId: selectedArtistId,
-        correctArtistId: correctArtistId,
+        selectedArtistName: selectedArtistName,
+        correctArtistName: correctArtistName,
         isCorrect: isCorrect
     });
 
     // Désactiver tous les boutons
     artistBtns.forEach(btn => {
         btn.disabled = true;
-        const btnArtistId = parseInt(btn.dataset.artistId);
+        const btnArtistName = btn.dataset.artistName;
         
-        if (btnArtistId === correctArtistId) {
+        if (btnArtistName === correctArtistName) {
             btn.classList.add('correct');
         } else if (btn === selectedBtn) {
             btn.classList.add('incorrect');
@@ -250,8 +252,7 @@ function showResults() {
     resultsList.innerHTML = '';
     appState.answers.forEach((answer, index) => {
         const artwork = answer.artwork;
-        const correctArtist = appState.currentArtists.find(a => a.id_artiste === answer.correctArtistId);
-        const correctArtistName = correctArtist ? correctArtist.nom : artwork.artiste || 'Inconnu';
+        const correctArtistName = answer.correctArtistName || artwork.artiste || 'Inconnu';
         
         const card = document.createElement('div');
         card.className = 'col-12 col-md-6 col-lg-4';
