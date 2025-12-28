@@ -84,7 +84,7 @@ async function startQuiz() {
 
         // Récupérer les œuvres
         const response = await fetch(
-            `${API_BASE_URL}/${appState.category}/random_items?nb_items=${appState.itemCount}`
+            `${API_BASE_URL}/${appState.category}/random_items?pserie=${appState.itemCount}`
         );
 
         if (!response.ok) {
