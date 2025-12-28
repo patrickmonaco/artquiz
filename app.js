@@ -86,7 +86,7 @@ async function startQuiz() {
         const response = await fetch(
             `${API_BASE_URL}/${appState.category}/random_items?pserie=${appState.itemCount}`
         );
-
+        console.error('Apres items');
         if (!response.ok) {
             throw new Error('Erreur lors du chargement des œuvres');
         }
@@ -153,7 +153,7 @@ async function loadCurrentQuestion() {
         const response = await fetch(
             `${API_BASE_URL}/${appState.category}/random_artistes?pnom=${encodeURIComponent(artistName)}`
         );
-
+console.error('Apres artistes');
         if (!response.ok) {
             throw new Error('Erreur lors du chargement des artistes');
         }
