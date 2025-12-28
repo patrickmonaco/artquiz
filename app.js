@@ -84,9 +84,9 @@ async function startQuiz() {
 
         // Récupérer les œuvres
         const response = await fetch(
-            `${API_BASE_URL}/${appState.category}/random_items?pserie=${appState.itemCount}`
+            `${API_BASE_URL}/${appState.category}/random_items?nb_items=${appState.itemCount}`
         );
-        console.error('Apres items');
+
         if (!response.ok) {
             throw new Error('Erreur lors du chargement des œuvres');
         }
@@ -148,12 +148,12 @@ async function loadCurrentQuestion() {
         img.src = artwork.img_url;
 
         // Charger les artistes
-        // On utilise le nom de l'artiste de l'œuvre (artwork.nom)
-        const artistName = artwork.nom || '';
+        // On utilise le nom de l'artiste de l'œuvre (artwork.artiste)
+        const artistName = artwork.artiste || '';
         const response = await fetch(
             `${API_BASE_URL}/${appState.category}/random_artistes?pnom=${encodeURIComponent(artistName)}`
         );
-console.error('Apres artistes');
+
         if (!response.ok) {
             throw new Error('Erreur lors du chargement des artistes');
         }
@@ -184,7 +184,7 @@ function handleAnswer(buttonIndex) {
     const artwork = appState.artworks[appState.currentIndex];
     const selectedBtn = artistBtns[buttonIndex];
     const selectedArtistName = selectedBtn.dataset.artistName;
-    const correctArtistName = artwork.nom;
+    const correctArtistName = artwork.artiste;
     const isCorrect = selectedArtistName === correctArtistName;
 
     // Enregistrer la réponse
@@ -252,7 +252,7 @@ function showResults() {
     resultsList.innerHTML = '';
     appState.answers.forEach((answer, index) => {
         const artwork = answer.artwork;
-        const correctArtistName = answer.correctArtistName || artwork.nom || 'Inconnu';
+        const correctArtistName = answer.correctArtistName || artwork.artiste || 'Inconnu';
         
         const card = document.createElement('div');
         card.className = 'col-12 col-md-6 col-lg-4';
