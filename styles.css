@@ -1,0 +1,223 @@
+:root {
+    --primary-color: #0d6efd;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+#app {
+    height: 100vh;
+    overflow: hidden;
+}
+
+.screen {
+    display: none;
+    height: 100%;
+}
+
+.screen.active {
+    display: block;
+}
+
+/* Écran de sélection */
+#selection-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+#selection-screen h1 {
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.category-btn, .count-btn {
+    min-width: 150px;
+    font-size: 1.1rem;
+    padding: 15px 30px;
+}
+
+.count-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* Écran de quiz */
+#quiz-screen {
+    overflow: hidden;
+}
+
+#quiz-screen .row {
+    height: 100%;
+}
+
+.image-column {
+    background-color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+#artwork-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    max-height: 100vh;
+}
+
+.artist-btn {
+    font-size: 1.1rem;
+    padding: 20px;
+    transition: all 0.3s ease;
+    border-width: 2px;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.artist-btn:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.artist-btn:disabled {
+    cursor: not-allowed;
+}
+
+.artist-btn.correct {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+    color: white;
+}
+
+.artist-btn.incorrect {
+    background-color: var(--danger-color);
+    border-color: var(--danger-color);
+    color: white;
+}
+
+.artist-btn.not-selected {
+    opacity: 0.5;
+}
+
+/* Écran de résultats */
+#results-screen {
+    overflow-y: auto;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.score-display {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    display: inline-block;
+    min-width: 250px;
+}
+
+.result-card {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    height: 100%;
+}
+
+.result-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.result-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.result-card img:hover {
+    opacity: 0.8;
+}
+
+.result-card h5 {
+    margin-top: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.result-card p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+}
+
+.result-card .badge {
+    font-size: 0.85rem;
+    padding: 5px 10px;
+}
+
+/* Responsive */
+@media (max-width: 991.98px) {
+    .image-column {
+        height: 40vh;
+        min-height: 300px;
+    }
+    
+    #artwork-image {
+        max-height: 40vh;
+    }
+    
+    .artist-btn {
+        min-height: 60px;
+        font-size: 1rem;
+        padding: 15px;
+    }
+}
+
+@media (min-width: 992px) {
+    #quiz-screen .col-lg-5 {
+        height: 100vh;
+        overflow-y: auto;
+    }
+    
+    .image-column {
+        height: 100vh;
+    }
+}
+
+/* Animation de chargement */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+#loading-artists, #artwork-loading {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Barre de progression */
+.progress {
+    height: 8px;
+}
+
+.progress-bar {
+    transition: width 0.5s ease;
+}
