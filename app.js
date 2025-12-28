@@ -3,7 +3,7 @@ const API_BASE_URL = 'https://rome.gotocity.eu/ords/demo/artquiz_api';
 
 // État de l'application
 const appState = {
-    category: null,
+    category: 'Peintures', // Valeur par défaut
     itemCount: 5,
     artworks: [],
     currentIndex: 0,
@@ -33,6 +33,11 @@ const replayBtn = document.getElementById('replay-btn');
 
 // Initialisation
 function init() {
+    // Sélectionner Peintures et 5 items par défaut
+    categoryBtns[0].classList.add('active'); // Peintures
+    countBtns[0].classList.add('active'); // 5 items
+    updateStartButton();
+    
     // Gestion de la sélection de catégorie
     categoryBtns.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -79,13 +84,27 @@ function showScreen(screen) {
 
 async function startQuiz() {
     try {
+        // Validation
+        if (!appState.category) {
+            alert('Veuillez sélectionner une catégorie (Peintures ou Sculptures)');
+            return;
+        }
+        
+        if (!appState.itemCount) {
+            alert('Veuillez sélectionner un nombre d\'œuvres (5 ou 10)');
+            return;
+        }
+        
         startBtn.disabled = true;
         startBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Chargement...';
 
+        console.log('État de l\'app:', appState);
+        console.log('Catégorie:', appState.category);
+        console.log('Nombre d\'items:', appState.itemCount);
+
         // Récupérer les œuvres
-        // Essayons différents paramètres possibles
         const url = `${API_BASE_URL}/${appState.category}/random_items?PSERIE=${appState.itemCount}`;
-        console.log('Appel API:', url);
+        console.log('URL complète:', url);
         
         const response = await fetch(url);
         
@@ -295,7 +314,7 @@ function showResults() {
 }
 
 function resetApp() {
-    appState.category = null;
+    appState.category = 'Peintures'; // Remettre Peintures par défaut
     appState.itemCount = 5;
     appState.artworks = [];
     appState.currentIndex = 0;
@@ -304,10 +323,11 @@ function resetApp() {
     
     // Réinitialiser les boutons de sélection
     categoryBtns.forEach(b => b.classList.remove('active'));
+    categoryBtns[0].classList.add('active'); // Sélectionner Peintures par défaut
     countBtns.forEach(b => b.classList.remove('active'));
     countBtns[0].classList.add('active'); // Sélectionner 5 par défaut
     
-    startBtn.disabled = true;
+    startBtn.disabled = false; // Activer le bouton
     startBtn.textContent = 'Commencer le quiz';
 }
 
