@@ -83,16 +83,26 @@ async function startQuiz() {
         startBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Chargement...';
 
         // Récupérer les œuvres
-        const response = await fetch(
-            `${API_BASE_URL}/${appState.category}/random_items`
-        );
-        // ?nb_items=${appState.itemCount}
+        // Essayons différents paramètres possibles
+        const url = `${API_BASE_URL}/${appState.category}/random_items?PSERIE=${appState.itemCount}`;
+        console.log('Appel API:', url);
+        
+        const response = await fetch(url);
+        
+        console.log('Réponse status:', response.status);
+
         if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Erreur API:', errorText);
             throw new Error('Erreur lors du chargement des œuvres');
         }
 
         const data = await response.json();
+        console.log('Données reçues:', data);
+        
         appState.artworks = data.items || data;
+        console.log('Nombre d\'œuvres:', appState.artworks.length);
+        
         appState.currentIndex = 0;
         appState.answers = [];
 
@@ -104,8 +114,9 @@ async function startQuiz() {
         loadCurrentQuestion();
 
     } catch (error) {
-        console.error('Erreur:', error);
-        alert('Erreur lors du chargement du quiz. Veuillez réessayer.');
+        console.error('Erreur complète:', error);
+        console.error('Stack:', error.stack);
+        alert(`Erreur lors du chargement du quiz: ${error.message}\n\nVérifiez la console pour plus de détails.`);
         startBtn.disabled = false;
         startBtn.textContent = 'Commencer le quiz';
     }
@@ -148,17 +159,24 @@ async function loadCurrentQuestion() {
         img.src = artwork.img_url;
 
         // Charger les artistes
-        // On utilise le nom de l'artiste de l'œuvre (artwork.artiste)
+        // On utilise le nom de l'artiste de l'œuvre (artwork.nom)
         const artistName = artwork.nom || '';
-        const response = await fetch(
-            `${API_BASE_URL}/${appState.category}/random_artistes?pnom=${encodeURIComponent(artistName)}`
-        );
+        const artistUrl = `${API_BASE_URL}/${appState.category}/random_artistes?pnom=${encodeURIComponent(artistName)}`;
+        console.log('Appel artistes:', artistUrl);
+        
+        const response = await fetch(artistUrl);
+        
+        console.log('Réponse artistes status:', response.status);
 
         if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Erreur artistes:', errorText);
             throw new Error('Erreur lors du chargement des artistes');
         }
 
         const artistsData = await response.json();
+        console.log('Artistes reçus:', artistsData);
+        
         appState.currentArtists = artistsData.items || artistsData;
 
         // Mélanger les artistes pour qu'ils ne soient pas toujours dans le même ordre
@@ -184,7 +202,7 @@ function handleAnswer(buttonIndex) {
     const artwork = appState.artworks[appState.currentIndex];
     const selectedBtn = artistBtns[buttonIndex];
     const selectedArtistName = selectedBtn.dataset.artistName;
-    const correctArtistName = artwork.artiste;
+    const correctArtistName = artwork.nom;
     const isCorrect = selectedArtistName === correctArtistName;
 
     // Enregistrer la réponse
@@ -252,7 +270,7 @@ function showResults() {
     resultsList.innerHTML = '';
     appState.answers.forEach((answer, index) => {
         const artwork = answer.artwork;
-        const correctArtistName = answer.correctArtistName || artwork.artiste || 'Inconnu';
+        const correctArtistName = answer.correctArtistName || artwork.nom || 'Inconnu';
         
         const card = document.createElement('div');
         card.className = 'col-12 col-md-6 col-lg-4';

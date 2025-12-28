@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Minimal ArtQuiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background: #0d6efd;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0b5ed7;
+        }
+        #output {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Minimal API</h1>
+    <p>Ce test va essayer d'appeler l'API exactement comme l'application principale.</p>
+    
+    <button onclick="testAPI()">Tester l'API</button>
+    
+    <div id="output"></div>
+
+    <script>
+        function log(message, isError = false) {
+            const output = document.getElementById('output');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = isError ? 'error' : 'success';
+            output.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
+            console.log(message);
+        }
+
+        async function testAPI() {
+            const output = document.getElementById('output');
+            output.innerHTML = '';
+            
+            log('🚀 Début du test...');
+            
+            const API_BASE_URL = 'https://rome.gotocity.eu/ords/demo/artquiz_api';
+            const category = 'Peintures';
+            const itemCount = 5;
+            
+            log(`API_BASE_URL: ${API_BASE_URL}`);
+            log(`category: ${category}`);
+            log(`itemCount: ${itemCount}`);
+            
+            const url = `${API_BASE_URL}/${category}/random_items?PSERIE=${itemCount}`;
+            log(`URL construite: ${url}`);
+            
+            log('📡 Envoi de la requête fetch()...');
+            
+            try {
+                const response = await fetch(url);
+                log(`✅ Réponse reçue! Status: ${response.status}`);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    log(`❌ Erreur HTTP: ${errorText}`, true);
+                    return;
+                }
+                
+                log('📦 Lecture du JSON...');
+                const data = await response.json();
+                
+                log(`✅ JSON reçu!`);
+                log(`Nombre d'items: ${data.items ? data.items.length : 'N/A'}`);
+                log(`Données complètes:\n${JSON.stringify(data, null, 2)}`);
+                
+                if (data.items && data.items.length > 0) {
+                    log(`\n🎨 Premier item:`);
+                    log(`  - ID: ${data.items[0].id}`);
+                    log(`  - Artiste: ${data.items[0].nom}`);
+                    log(`  - Titre: ${data.items[0].titre}`);
+                }
+                
+            } catch (error) {
+                log(`\n❌ ERREUR CRITIQUE!`, true);
+                log(`Type: ${error.name}`, true);
+                log(`Message: ${error.message}`, true);
+                log(`Stack: ${error.stack}`, true);
+                
+                if (error.message.includes('Failed to fetch')) {
+                    log(`\n⚠️ Diagnostic:`, true);
+                    log(`Cette erreur "Failed to fetch" peut être causée par:`, true);
+                    log(`1. CORS bloqué par le serveur`, true);
+                    log(`2. Problème réseau`, true);
+                    log(`3. URL incorrecte`, true);
+                    log(`\n💡 Solution possible:`, true);
+                    log(`- Hébergez l'application sur un serveur web (GitHub Pages)`, true);
+                    log(`- Ou configurez CORS sur votre API Oracle`, true);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
