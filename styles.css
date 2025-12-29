@@ -299,20 +299,32 @@ html, body {
 
 /* Responsive */
 @media (max-width: 991.98px) {
-    /* Supprimer l'espace entre image et section des boutons */
+    /* SUPPRIMER ABSOLUMENT l'espace entre image et boutons */
     #quiz-screen .row {
         gap: 0 !important;
+        margin: 0 !important;
+    }
+    
+    #quiz-screen .col-lg-5,
+    #quiz-screen .col-lg-7 {
+        padding: 0 !important;
+        margin: 0 !important;
     }
     
     .image-column {
         height: 38vh;
         min-height: 260px;
-        margin-bottom: 0 !important;
-        padding-bottom: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
     
     #artwork-image {
         max-height: 38vh;
+    }
+    
+    #artwork-loading {
+        margin: 0 !important;
+        padding: 0 !important;
     }
     
     .artist-btn {
@@ -321,31 +333,29 @@ html, body {
         padding: 10px;
     }
     
-    /* Minimiser TOUS les espacements sur mobile */
-    #quiz-screen .col-lg-5 {
-        padding-top: 0 !important;
-        margin-top: 0 !important;
-    }
-    
+    /* La section des boutons doit coller à l'image */
     #quiz-screen .col-lg-5 > div {
-        padding: 0.25rem 0.5rem !important;
-        margin-top: 0 !important;
+        padding: 0.15rem 0.5rem 0.5rem 0.5rem !important;
+        margin: 0 !important;
     }
     
+    /* Le titre de question doit avoir une mini marge en haut seulement */
     #quiz-screen .mb-4 {
-        margin-bottom: 0.25rem !important;
+        margin-top: 0.15rem !important;
+        margin-bottom: 0.2rem !important;
+        padding-top: 0 !important;
     }
     
     #question-title {
-        margin-bottom: 0.1rem !important;
+        margin: 0 !important;
+        padding: 0 !important;
         font-size: 0.85rem;
         line-height: 1;
-        padding: 0;
     }
     
     .progress {
         height: 4px;
-        margin-bottom: 0.25rem !important;
+        margin: 0.2rem 0 0.2rem 0 !important;
     }
     
     /* Réduire l'espacement entre les boutons */
