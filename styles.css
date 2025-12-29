@@ -298,8 +298,8 @@ html, body {
         margin: 0 !important;
     }
     
-    #quiz-screen .col-sm-5,
-    #quiz-screen .col-sm-7 {
+    #quiz-screen .col-sm-4,
+    #quiz-screen .col-sm-8 {
         padding: 0 !important;
         margin: 0 !important;
         width: 100% !important;
@@ -371,55 +371,8 @@ html, body {
     }
 }
 
-/* TABLETTES PORTRAIT (600px - 800px) : mode vertical aussi */
-@media (min-width: 600px) and (max-width: 799.98px) {
-    #quiz-screen .row {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 0 !important;
-        height: auto !important;
-    }
-    
-    .image-column {
-        order: 0 !important;
-        height: 40vh !important;
-    }
-    
-    .quiz-buttons-section {
-        order: 1 !important;
-    }
-    
-    .quiz-content {
-        padding: 1rem !important;
-    }
-    
-    .quiz-header {
-        padding: 0.5rem !important;
-        background: #f8f9fa;
-        margin-bottom: 0.75rem !important;
-    }
-    
-    /* Forcer l'espacement entre les boutons */
-    #artists-container .row {
-        display: flex !important;
-        flex-wrap: wrap !important;
-        gap: 0.75rem !important;
-        margin: 0 !important;
-    }
-    
-    #artists-container .row > div {
-        flex: 0 0 calc(50% - 0.375rem) !important;
-        max-width: calc(50% - 0.375rem) !important;
-    }
-    
-    .artist-btn {
-        height: 80px !important;
-        width: 100% !important;
-    }
-}
-
-/* TABLETTES PAYSAGE ET DESKTOP (≥ 800px) : mode horizontal Bootstrap */
-@media (min-width: 800px) {
+/* TABLETTES ET DESKTOP (≥ 600px) : boutons empilés verticalement */
+@media (min-width: 600px) {
     .quiz-content {
         padding: 1.5rem;
         flex-grow: 1;
@@ -435,23 +388,13 @@ html, body {
         margin-bottom: 1.5rem;
     }
     
-    /* Forcer l'espacement avec flexbox */
+    /* Boutons empilés avec espacement réduit */
     #artists-container .row {
-        display: flex !important;
-        flex-wrap: wrap !important;
         row-gap: 0.5rem !important;
-        column-gap: 0.75rem !important;
-        margin: 0 !important;
-    }
-    
-    #artists-container .row > div {
-        flex: 0 0 calc(50% - 0.375rem) !important;
-        max-width: calc(50% - 0.375rem) !important;
     }
     
     .artist-btn {
-        height: 120px !important;
-        width: 100% !important;
+        min-height: 70px;
     }
 }
 
