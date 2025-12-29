@@ -218,6 +218,13 @@ async function loadCurrentQuestion() {
         btn.textContent = '';
         btn.blur(); // Forcer le retrait du focus
     });
+    
+    // Double sécurité : retirer active après un court délai
+    setTimeout(() => {
+        artistBtns.forEach(btn => {
+            btn.classList.remove('active');
+        });
+    }, 50);
 
     try {
         // Charger l'image
