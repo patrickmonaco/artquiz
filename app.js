@@ -396,7 +396,7 @@ function showResults() {
         card.innerHTML = `
             <div class="result-card">
                 <img src="${artwork.img_url}" alt="${artwork.titre}" 
-                     onclick="window.open('https://collections.louvre.fr/ark:/53355/${artwork.id}', '_blank')">
+                     onclick="window.open('https://collections.louvre.fr/ark:/53355/${artwork.ark}', '_blank')">
                 <h5>${artwork.titre || 'Sans titre'}</h5>
                 <p><strong>${correctArtistName}</strong></p>
                 ${artwork.autre ? `<p class="text-muted small">${artwork.autre}</p>` : ''}
