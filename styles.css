@@ -142,23 +142,32 @@ html, body {
     user-select: none;
 }
 
-/* Grille des boutons artistes */
+/* Desktop : forcer la même hauteur pour tous les boutons */
 @media (min-width: 992px) {
+    #artists-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 2rem 0;
+    }
+    
     .artists-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: 1fr 1fr;
-        gap: 1rem;
-        height: 100%;
+        max-width: 100%;
     }
     
-    .artists-grid > div {
-        display: contents;
+    .artists-grid > .col-lg-6 {
+        margin-bottom: 1rem;
     }
     
-    .artists-grid .artist-btn {
-        height: 100%;
-        max-height: 200px;
+    .artists-grid > .col-lg-6:nth-child(3),
+    .artists-grid > .col-lg-6:nth-child(4) {
+        margin-bottom: 0;
+    }
+    
+    .artist-btn {
+        height: 120px !important;
+        min-height: 120px;
+        max-height: 120px;
     }
 }
 
