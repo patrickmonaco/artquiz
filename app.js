@@ -298,6 +298,12 @@ function handleAnswer(buttonIndex) {
     const correctArtistName = artwork.nom;
     const isCorrect = selectedArtistName === correctArtistName;
     
+    // Retirer immédiatement toutes les classes actives de Bootstrap
+    artistBtns.forEach(btn => {
+        btn.classList.remove('active');
+        btn.blur();
+    });
+    
     // Forcer le blur du bouton pour éviter qu'il reste en focus
     selectedBtn.blur();
     document.activeElement.blur();

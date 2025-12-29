@@ -174,30 +174,23 @@ html, body {
 .artist-btn:focus,
 .artist-btn:focus-visible,
 .artist-btn:active,
-.artist-btn:active:focus,
-.artist-btn.focus {
+.artist-btn:active:focus {
     box-shadow: none !important;
     outline: none !important;
-    background-color: transparent !important;
 }
 
-/* Empêcher absolument le fond bleu de Bootstrap sur les boutons artistes */
-.artist-btn:not(.correct):not(.incorrect) {
-    background-color: transparent !important;
-}
-
-.artist-btn:not(:disabled):not(.correct):not(.incorrect):active,
-.artist-btn.active:not(.correct):not(.incorrect),
-.artist-btn.show:not(.correct):not(.incorrect) {
-    background-color: transparent !important;
-    border-color: #0d6efd !important;
+/* Empêcher le fond bleu Bootstrap */
+.artist-btn:not(.correct):not(.incorrect):focus,
+.artist-btn:not(.correct):not(.incorrect):active,
+.artist-btn:not(.correct):not(.incorrect).active {
+    background-color: white !important;
     color: #0d6efd !important;
+    border-color: #0d6efd !important;
 }
 
 .artist-btn:hover:not(:disabled):not(.correct):not(.incorrect) {
-    transform: scale(1.05);
+    transform: scale(1.02);
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    background-color: rgba(13, 110, 253, 0.1) !important;
 }
 
 .artist-btn:disabled {
@@ -304,50 +297,43 @@ html, body {
 /* Responsive */
 @media (max-width: 991.98px) {
     .image-column {
-        height: 30vh;
-        min-height: 200px;
+        height: 35vh;
+        min-height: 250px;
     }
     
     #artwork-image {
-        max-height: 30vh;
+        max-height: 35vh;
     }
     
     .artist-btn {
-        min-height: 50px;
-        font-size: 0.9rem;
-        padding: 8px;
+        min-height: 70px;
+        font-size: 1rem;
+        padding: 15px;
     }
     
-    /* Supprimer presque tous les espacements sur mobile */
+    /* Réduire les marges sur mobile */
     #quiz-screen .col-lg-5 > div {
-        padding: 0.15rem !important;
+        padding: 0.75rem !important;
     }
     
     #quiz-screen .mb-4 {
-        margin-bottom: 0.15rem !important;
+        margin-bottom: 0.5rem !important;
     }
     
     #question-title {
-        margin-bottom: 0.1rem !important;
-        font-size: 0.85rem;
-        line-height: 1.1;
-        padding: 0;
+        margin-bottom: 0.25rem !important;
+        font-size: 1rem;
+        line-height: 1.3;
     }
     
     .progress {
-        height: 4px;
-        margin-bottom: 0.15rem !important;
+        height: 6px;
+        margin-bottom: 0.5rem !important;
     }
     
-    /* Réduire l'espacement entre les boutons */
+    /* Espacement entre les boutons */
     #artists-container .row {
-        row-gap: 0.3rem !important;
-    }
-    
-    /* Supprimer le padding du container des artistes */
-    #artists-container {
-        padding-top: 0 !important;
-        margin-top: 0 !important;
+        row-gap: 0.75rem !important;
     }
 }
 
