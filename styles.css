@@ -391,7 +391,7 @@ html, body {
     
     /* Boutons empilés avec espacement réduit */
     #artists-container .row {
-        row-gap: 0.5rem !important;
+        row-gap: 0.35rem !important;
     }
     
     .artist-btn {
