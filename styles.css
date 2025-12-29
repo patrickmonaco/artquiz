@@ -275,21 +275,31 @@ html, body {
     .artist-btn {
         min-height: 60px;
         font-size: 1rem;
-        padding: 15px;
+        padding: 12px;
     }
     
-    /* Réduire les marges sur mobile pour gagner de l'espace */
-    #quiz-screen .col-lg-5 .p-4 {
-        padding: 1rem !important;
+    /* Réduire drastiquement les marges sur mobile */
+    #quiz-screen .col-lg-5 > div {
+        padding: 0.5rem !important;
+    }
+    
+    #quiz-screen .mb-4 {
+        margin-bottom: 0.5rem !important;
     }
     
     #question-title {
-        margin-bottom: 0.5rem !important;
-        font-size: 1rem;
+        margin-bottom: 0.25rem !important;
+        font-size: 0.95rem;
     }
     
     .progress {
-        margin-bottom: 0.75rem !important;
+        height: 6px;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    /* Réduire l'espacement entre les boutons */
+    #artists-container .row {
+        row-gap: 0.5rem !important;
     }
 }
 
