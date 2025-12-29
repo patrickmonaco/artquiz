@@ -7,7 +7,8 @@ const API_BASE_URL = 'https://rome.gotocity.eu/ords/demo/artquiz_api';
 // État de l'application
 const appState = {
     category: 'Peintures', // Valeur par défaut
-    itemCount: 5,
+    itemCount: 5, // Valeur par défaut
+    level: 3, // Niveau par défaut (1, 2 ou 3)
     artworks: [],
     currentIndex: 0,
     answers: [],
@@ -20,7 +21,6 @@ const quizScreen = document.getElementById('quiz-screen');
 const resultsScreen = document.getElementById('results-screen');
 const startBtn = document.getElementById('start-btn');
 const categoryBtns = document.querySelectorAll('.category-btn');
-const countBtns = document.querySelectorAll('.count-btn');
 const artistBtns = document.querySelectorAll('.artist-btn');
 const artworkImage = document.getElementById('artwork-image');
 const artworkLoading = document.getElementById('artwork-loading');
@@ -34,16 +34,52 @@ const scoreMessage = document.getElementById('score-message');
 const resultsList = document.getElementById('results-list');
 const replayBtn = document.getElementById('replay-btn');
 
+// Éléments de réglages et aide
+const settingsBtn = document.getElementById('settings-btn');
+const helpBtn = document.getElementById('help-btn');
+const settingsModal = new bootstrap.Modal(document.getElementById('settingsModal'));
+const helpModal = new bootstrap.Modal(document.getElementById('helpModal'));
+const seriesSizeBtns = document.querySelectorAll('.series-size-btn');
+const levelBtns = document.querySelectorAll('.level-btn');
+
 console.log('DOM chargé, initialisation...');
 console.log('quizScreen:', quizScreen);
 console.log('selectionScreen:', selectionScreen);
 
 // Initialisation
 function init() {
-    // Sélectionner Peintures et 5 items par défaut
-    categoryBtns[0].classList.add('active'); // Peintures
-    countBtns[0].classList.add('active'); // 5 items
-    updateStartButton();
+    // Sélectionner Peintures par défaut
+    categoryBtns[0].classList.add('active');
+    
+    // Initialiser les réglages dans la modale
+    updateSettingsUI();
+    
+    // Gestion des modales
+    settingsBtn.addEventListener('click', () => {
+        settingsModal.show();
+    });
+    
+    helpBtn.addEventListener('click', () => {
+        helpModal.show();
+    });
+    
+    // Gestion des boutons de taille de série
+    seriesSizeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            seriesSizeBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            appState.itemCount = parseInt(btn.dataset.size);
+        });
+    });
+    
+    // Gestion des boutons de niveau
+    levelBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            levelBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            appState.level = parseInt(btn.dataset.level);
+        });
+    });
     
     // Gestion de la sélection de catégorie
     categoryBtns.forEach(btn => {
@@ -51,17 +87,6 @@ function init() {
             categoryBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             appState.category = btn.dataset.category;
-            updateStartButton();
-        });
-    });
-
-    // Gestion de la sélection du nombre d'items
-    countBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            countBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            appState.itemCount = parseInt(btn.dataset.count);
-            updateStartButton();
         });
     });
 
@@ -80,8 +105,23 @@ function init() {
     });
 }
 
-function updateStartButton() {
-    startBtn.disabled = !appState.category;
+function updateSettingsUI() {
+    // Mettre à jour l'UI des réglages selon l'état actuel
+    seriesSizeBtns.forEach(btn => {
+        if (parseInt(btn.dataset.size) === appState.itemCount) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+    
+    levelBtns.forEach(btn => {
+        if (parseInt(btn.dataset.level) === appState.level) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
 }
 
 function showScreen(screen) {
@@ -115,7 +155,7 @@ async function startQuiz() {
         console.log('Nombre d\'items:', appState.itemCount);
 
         // Récupérer les œuvres
-        const url = `${API_BASE_URL}/${appState.category}/random_items?PSERIE=${appState.itemCount}`;
+        const url = `${API_BASE_URL}/${appState.category}/random_items?PSERIE=${appState.itemCount}&PNIVEAU=${appState.level}`;
         console.log('URL complète:', url);
         
         const response = await fetch(url);
@@ -337,6 +377,7 @@ function showResults() {
 function resetApp() {
     appState.category = 'Peintures'; // Remettre Peintures par défaut
     appState.itemCount = 5;
+    appState.level = 3;
     appState.artworks = [];
     appState.currentIndex = 0;
     appState.answers = [];
@@ -345,8 +386,9 @@ function resetApp() {
     // Réinitialiser les boutons de sélection
     categoryBtns.forEach(b => b.classList.remove('active'));
     categoryBtns[0].classList.add('active'); // Sélectionner Peintures par défaut
-    countBtns.forEach(b => b.classList.remove('active'));
-    countBtns[0].classList.add('active'); // Sélectionner 5 par défaut
+    
+    // Réinitialiser les réglages
+    updateSettingsUI();
     
     startBtn.disabled = false; // Activer le bouton
     startBtn.textContent = 'Commencer le quiz';
