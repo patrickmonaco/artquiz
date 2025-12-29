@@ -300,12 +300,12 @@ html, body {
 /* Responsive */
 @media (max-width: 991.98px) {
     .image-column {
-        height: 33vh;
-        min-height: 220px;
+        height: 38vh;
+        min-height: 260px;
     }
     
     #artwork-image {
-        max-height: 33vh;
+        max-height: 38vh;
     }
     
     .artist-btn {
