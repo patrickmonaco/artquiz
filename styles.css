@@ -294,42 +294,43 @@ html, body {
 /* Responsive */
 @media (max-width: 991.98px) {
     .image-column {
-        height: 35vh;
-        min-height: 250px;
+        height: 32vh;
+        min-height: 230px;
     }
     
     #artwork-image {
-        max-height: 35vh;
+        max-height: 32vh;
     }
     
     .artist-btn {
-        min-height: 60px;
-        font-size: 1rem;
-        padding: 12px;
+        min-height: 55px;
+        font-size: 0.95rem;
+        padding: 10px;
     }
     
-    /* Réduire drastiquement les marges sur mobile */
+    /* Réduire au maximum les marges sur mobile */
     #quiz-screen .col-lg-5 > div {
-        padding: 0.5rem !important;
+        padding: 0.25rem !important;
     }
     
     #quiz-screen .mb-4 {
-        margin-bottom: 0.5rem !important;
+        margin-bottom: 0.25rem !important;
     }
     
     #question-title {
-        margin-bottom: 0.25rem !important;
-        font-size: 0.95rem;
+        margin-bottom: 0.15rem !important;
+        font-size: 0.9rem;
+        line-height: 1.2;
     }
     
     .progress {
-        height: 6px;
-        margin-bottom: 0.5rem !important;
+        height: 5px;
+        margin-bottom: 0.25rem !important;
     }
     
     /* Réduire l'espacement entre les boutons */
     #artists-container .row {
-        row-gap: 0.5rem !important;
+        row-gap: 0.4rem !important;
     }
 }
 
