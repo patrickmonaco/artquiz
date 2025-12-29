@@ -1,3 +1,6 @@
+// Attendre que le DOM soit chargé
+document.addEventListener('DOMContentLoaded', function() {
+
 // Configuration de l'API
 const API_BASE_URL = 'https://rome.gotocity.eu/ords/demo/artquiz_api';
 
@@ -30,6 +33,10 @@ const scoreEl = document.getElementById('score');
 const scoreMessage = document.getElementById('score-message');
 const resultsList = document.getElementById('results-list');
 const replayBtn = document.getElementById('replay-btn');
+
+console.log('DOM chargé, initialisation...');
+console.log('quizScreen:', quizScreen);
+console.log('selectionScreen:', selectionScreen);
 
 // Initialisation
 function init() {
@@ -78,8 +85,13 @@ function updateStartButton() {
 }
 
 function showScreen(screen) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    console.log('showScreen appelé avec:', screen);
+    document.querySelectorAll('.screen').forEach(s => {
+        console.log('Écran:', s.id, 'classList:', s.classList.value);
+        s.classList.remove('active');
+    });
     screen.classList.add('active');
+    console.log('Écran activé:', screen.id, 'classList:', screen.classList.value);
 }
 
 async function startQuiz() {
@@ -129,7 +141,9 @@ async function startQuiz() {
         totalQuestionsEl.textContent = appState.itemCount;
         
         // Passer à l'écran de quiz
+        console.log('Passage à l\'écran de quiz...');
         showScreen(quizScreen);
+        console.log('Écran de quiz affiché, chargement de la question...');
         loadCurrentQuestion();
 
     } catch (error) {
@@ -340,3 +354,5 @@ function resetApp() {
 
 // Démarrer l'application
 init();
+
+}); // Fin DOMContentLoaded
