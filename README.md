@@ -109,14 +109,56 @@ GET /artquiz_api/Peintures/random_artistes?pnom=Delacroix
 ### Structure des données
 
 **Œuvre (artwork) :**
-- `id` : Identifiant unique
+- `id` : Identifiant unique (numéro ARK)
 - `titre` : Titre de l'œuvre
+- `nom` : Nom de l'artiste auteur de l'œuvre
+- `dd` : Date de création
 - `img_url` : URL de l'image
-- `artiste` : Nom de l'artiste auteur de l'œuvre
-- `autre` : Informations complémentaires (dimensions, etc.)
+- `legende` : URL de l'image (légende)
+- `autre` : Informations complémentaires (dimensions au format "H:XXm;L:YYm")
+- `copyright` : Information de copyright
 
-**Artiste :**
-- `nom` : Nom de l'artiste
+**Artiste (depuis random_artistes) :**
+- `column_value` : Nom de l'artiste
+
+**Exemple de réponse random_artistes :**
+```json
+{
+  "items": [
+    {
+      "column_value": "Boucher, François"
+    },
+    {
+      "column_value": "Rembrandt, Harmensz. van Rijn"
+    },
+    {
+      "column_value": "Millet, Jean Francois"
+    },
+    {
+      "column_value": "Le Nain, Louis"
+    }
+  ],
+  "count": 4
+}
+```
+
+**Exemple de réponse random_items :**
+```json
+{
+  "items": [
+    {
+      "i": 0,
+      "id": 1,
+      "nom": "Chardin, Jean Baptiste Siméon",
+      "titre": "Pipes et vase à boire, dit aussi La Tabagie",
+      "dd": "1750",
+      "img_url": "https://collections.louvre.fr/media/cache/large/...",
+      "autre": "H:0,32m;L:0,42m"
+    }
+  ],
+  "count": 5
+}
+```
 
 ## Fonctionnement
 

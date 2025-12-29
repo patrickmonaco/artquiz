@@ -197,18 +197,25 @@ async function loadCurrentQuestion() {
         console.log('Artistes reçus:', artistsData);
         
         appState.currentArtists = artistsData.items || artistsData;
+        console.log('currentArtists:', appState.currentArtists);
+        console.log('Nombre d\'artistes:', appState.currentArtists.length);
 
         // Mélanger les artistes pour qu'ils ne soient pas toujours dans le même ordre
         const shuffledArtists = [...appState.currentArtists].sort(() => Math.random() - 0.5);
+        console.log('Artistes mélangés:', shuffledArtists);
 
         // Afficher les artistes
         shuffledArtists.forEach((artist, index) => {
-            artistBtns[index].textContent = artist.nom;
-            artistBtns[index].dataset.artistName = artist.nom;
+            const artistName = artist.column_value || artist.nom; // Supporter les deux formats
+            console.log(`Bouton ${index}: ${artistName}`);
+            artistBtns[index].textContent = artistName;
+            artistBtns[index].dataset.artistName = artistName;
         });
 
+        console.log('Masquage du loading, affichage du container');
         loadingArtists.classList.add('d-none');
         artistsContainer.classList.remove('d-none');
+        console.log('Artistes affichés!');
 
     } catch (error) {
         console.error('Erreur:', error);
