@@ -142,6 +142,26 @@ html, body {
     user-select: none;
 }
 
+/* Grille des boutons artistes */
+@media (min-width: 992px) {
+    .artists-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 1rem;
+        height: 100%;
+    }
+    
+    .artists-grid > div {
+        display: contents;
+    }
+    
+    .artists-grid .artist-btn {
+        height: 100%;
+        max-height: 200px;
+    }
+}
+
 .artist-btn:focus,
 .artist-btn:focus-visible,
 .artist-btn:active:focus {
