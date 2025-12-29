@@ -297,7 +297,7 @@ html, body {
     padding: 5px 10px;
 }
 
-/* Responsive */
+/* Responsive MOBILE UNIQUEMENT */
 @media (max-width: 991.98px) {
     /* Garder flexbox pour l'ordre mais supprimer l'espace */
     #quiz-screen .row {
@@ -305,16 +305,20 @@ html, body {
         flex-direction: column !important;
         gap: 0 !important;
         margin: 0 !important;
+        height: auto !important;
     }
     
     .quiz-buttons-section {
         display: flex !important;
         flex-direction: column !important;
         order: 1 !important;
+        height: auto !important;
     }
     
     .image-column {
         order: 0 !important;
+        height: 38vh !important;
+        min-height: 260px !important;
     }
     
     .quiz-content {
@@ -334,8 +338,6 @@ html, body {
     
     /* L'image doit remplir complètement sa zone */
     .image-column {
-        height: 38vh;
-        min-height: 260px;
         margin: 0 !important;
         padding: 0 !important;
         display: flex !important;
@@ -398,13 +400,21 @@ html, body {
     }
 }
 
-/* Desktop : garder le style original */
+/* Desktop : garder le style original Bootstrap */
 @media (min-width: 992px) {
     .quiz-content {
         padding: 1.5rem;
         flex-grow: 1;
         display: flex;
         flex-direction: column;
+    }
+    
+    #quiz-screen .row {
+        height: 100%;
+    }
+    
+    .quiz-header {
+        margin-bottom: 1rem;
     }
 }
 
