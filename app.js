@@ -212,8 +212,9 @@ async function loadCurrentQuestion() {
     // Réactiver et réinitialiser les boutons
     artistBtns.forEach(btn => {
         btn.disabled = false;
-        btn.classList.remove('correct', 'incorrect', 'not-selected');
+        btn.classList.remove('correct', 'incorrect', 'not-selected', 'active');
         btn.textContent = '';
+        btn.blur(); // Forcer le retrait du focus
     });
 
     try {
@@ -272,9 +273,19 @@ async function loadCurrentQuestion() {
         console.log('Artistes affichés!');
 
     } catch (error) {
-        console.error('Erreur:', error);
-        alert('Erreur lors du chargement de la question. Passage à la suivante...');
-        nextQuestion();
+        console.error('Erreur complète:', error);
+        console.error('Stack:', error.stack);
+        
+        // Si c'est une erreur réseau (CORS en local), informer l'utilisateur
+        if (error.message.includes('Failed to fetch') || error.name === 'TypeError') {
+            alert('Erreur de connexion à l\'API.\n\nSi vous testez en local, cette erreur est normale (problème CORS).\n\nSolution : Déployez l\'application sur GitHub Pages ou utilisez un serveur local.\n\nRetour à l\'écran d\'accueil...');
+            resetApp();
+            showScreen(selectionScreen);
+        } else {
+            alert('Erreur lors du chargement de la question.\n\nRetour à l\'écran d\'accueil...');
+            resetApp();
+            showScreen(selectionScreen);
+        }
     }
 }
 
@@ -328,6 +339,15 @@ function nextQuestion() {
 }
 
 function showResults() {
+    // Protection si aucune réponse
+    if (!appState.answers || appState.answers.length === 0) {
+        console.error('Aucune réponse enregistrée');
+        alert('Aucune réponse n\'a été enregistrée.\n\nRetour à l\'écran d\'accueil...');
+        resetApp();
+        showScreen(selectionScreen);
+        return;
+    }
+    
     const correctAnswers = appState.answers.filter(a => a.isCorrect).length;
     const totalQuestions = appState.answers.length;
     const percentage = Math.round((correctAnswers / totalQuestions) * 100);

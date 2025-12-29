@@ -150,7 +150,8 @@ html, body {
     background-color: transparent !important;
 }
 
-.artist-btn:not(:disabled):not(.correct):not(.incorrect):active {
+.artist-btn:not(:disabled):not(.correct):not(.incorrect):active,
+.artist-btn.active:not(.correct):not(.incorrect) {
     background-color: transparent !important;
     border-color: #0d6efd !important;
 }
