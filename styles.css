@@ -299,9 +299,16 @@ html, body {
 
 /* Responsive */
 @media (max-width: 991.98px) {
+    /* Supprimer l'espace entre image et section des boutons */
+    #quiz-screen .row {
+        gap: 0 !important;
+    }
+    
     .image-column {
         height: 38vh;
         min-height: 260px;
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
     }
     
     #artwork-image {
@@ -309,34 +316,41 @@ html, body {
     }
     
     .artist-btn {
-        min-height: 58px;
+        min-height: 56px;
         font-size: 0.9rem;
         padding: 10px;
     }
     
-    /* Minimiser les marges sur mobile */
+    /* Minimiser TOUS les espacements sur mobile */
+    #quiz-screen .col-lg-5 {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+    
     #quiz-screen .col-lg-5 > div {
-        padding: 0.35rem !important;
+        padding: 0.25rem 0.5rem !important;
+        margin-top: 0 !important;
     }
     
     #quiz-screen .mb-4 {
-        margin-bottom: 0.3rem !important;
+        margin-bottom: 0.25rem !important;
     }
     
     #question-title {
-        margin-bottom: 0.15rem !important;
-        font-size: 0.9rem;
-        line-height: 1.1;
+        margin-bottom: 0.1rem !important;
+        font-size: 0.85rem;
+        line-height: 1;
+        padding: 0;
     }
     
     .progress {
         height: 4px;
-        margin-bottom: 0.3rem !important;
+        margin-bottom: 0.25rem !important;
     }
     
-    /* Réduire au maximum l'espacement entre les boutons */
+    /* Réduire l'espacement entre les boutons */
     #artists-container .row {
-        row-gap: 0.4rem !important;
+        row-gap: 0.35rem !important;
     }
 }
 
