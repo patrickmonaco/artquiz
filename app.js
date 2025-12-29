@@ -284,6 +284,10 @@ function handleAnswer(buttonIndex) {
     const selectedArtistName = selectedBtn.dataset.artistName;
     const correctArtistName = artwork.nom;
     const isCorrect = selectedArtistName === correctArtistName;
+    
+    // Forcer le blur du bouton pour éviter qu'il reste en focus
+    selectedBtn.blur();
+    document.activeElement.blur();
 
     // Enregistrer la réponse
     appState.answers.push({

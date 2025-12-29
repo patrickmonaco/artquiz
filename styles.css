@@ -139,11 +139,20 @@ html, body {
     text-align: center;
     -webkit-tap-highlight-color: transparent;
     outline: none;
+    user-select: none;
 }
 
-.artist-btn:focus {
-    box-shadow: none;
-    outline: none;
+.artist-btn:focus,
+.artist-btn:focus-visible,
+.artist-btn:active:focus {
+    box-shadow: none !important;
+    outline: none !important;
+    background-color: transparent !important;
+}
+
+.artist-btn:not(:disabled):not(.correct):not(.incorrect):active {
+    background-color: transparent !important;
+    border-color: #0d6efd !important;
 }
 
 .artist-btn:hover:not(:disabled) {
@@ -255,18 +264,32 @@ html, body {
 /* Responsive */
 @media (max-width: 991.98px) {
     .image-column {
-        height: 40vh;
-        min-height: 300px;
+        height: 35vh;
+        min-height: 250px;
     }
     
     #artwork-image {
-        max-height: 40vh;
+        max-height: 35vh;
     }
     
     .artist-btn {
         min-height: 60px;
         font-size: 1rem;
         padding: 15px;
+    }
+    
+    /* Réduire les marges sur mobile pour gagner de l'espace */
+    #quiz-screen .col-lg-5 .p-4 {
+        padding: 1rem !important;
+    }
+    
+    #question-title {
+        margin-bottom: 0.5rem !important;
+        font-size: 1rem;
+    }
+    
+    .progress {
+        margin-bottom: 0.75rem !important;
     }
 }
 
