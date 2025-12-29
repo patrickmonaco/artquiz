@@ -299,9 +299,27 @@ html, body {
 
 /* Responsive */
 @media (max-width: 991.98px) {
-    /* SUPPRIMER ABSOLUMENT l'espace entre image et boutons */
+    /* Garder flexbox pour l'ordre mais supprimer l'espace */
     #quiz-screen .row {
+        display: flex !important;
+        flex-direction: column !important;
         gap: 0 !important;
+        margin: 0 !important;
+    }
+    
+    .quiz-buttons-section {
+        display: flex !important;
+        flex-direction: column !important;
+        order: 1 !important;
+    }
+    
+    .image-column {
+        order: 0 !important;
+    }
+    
+    .quiz-content {
+        display: block !important;
+        padding: 0 !important;
         margin: 0 !important;
     }
     
@@ -309,17 +327,26 @@ html, body {
     #quiz-screen .col-lg-7 {
         padding: 0 !important;
         margin: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: none !important;
     }
     
+    /* L'image doit remplir complètement sa zone */
     .image-column {
         height: 38vh;
         min-height: 260px;
         margin: 0 !important;
         padding: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
     
     #artwork-image {
         max-height: 38vh;
+        margin: 0 !important;
+        padding: 0 !important;
     }
     
     #artwork-loading {
@@ -333,34 +360,51 @@ html, body {
         padding: 10px;
     }
     
-    /* La section des boutons doit coller à l'image */
-    #quiz-screen .col-lg-5 > div {
-        padding: 0.15rem 0.5rem 0.5rem 0.5rem !important;
+    /* L'en-tête du quiz doit être minimaliste */
+    .quiz-header {
         margin: 0 !important;
-    }
-    
-    /* Le titre de question doit avoir une mini marge en haut seulement */
-    #quiz-screen .mb-4 {
-        margin-top: 0.15rem !important;
-        margin-bottom: 0.2rem !important;
-        padding-top: 0 !important;
+        padding: 0.4rem 0.5rem !important;
+        background: #f8f9fa;
     }
     
     #question-title {
         margin: 0 !important;
         padding: 0 !important;
         font-size: 0.85rem;
-        line-height: 1;
+        line-height: 1.2;
     }
     
     .progress {
         height: 4px;
-        margin: 0.2rem 0 0.2rem 0 !important;
+        margin: 0.2rem 0 0 0 !important;
     }
     
-    /* Réduire l'espacement entre les boutons */
+    /* Container des artistes */
+    #artists-container {
+        margin: 0 !important;
+        padding: 0.25rem 0.5rem 0.5rem 0.5rem !important;
+    }
+    
+    /* Réduire l'espace entre les boutons */
     #artists-container .row {
-        row-gap: 0.35rem !important;
+        row-gap: 0.25rem !important;
+        margin: 0 !important;
+    }
+    
+    /* Le spinner de chargement */
+    #loading-artists {
+        margin: 0 !important;
+        padding: 0.5rem !important;
+    }
+}
+
+/* Desktop : garder le style original */
+@media (min-width: 992px) {
+    .quiz-content {
+        padding: 1.5rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
     }
 }
 
