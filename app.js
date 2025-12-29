@@ -95,17 +95,7 @@ function init() {
 
     // Gestion des réponses
     artistBtns.forEach(btn => {
-        // Empêcher Bootstrap d'ajouter la classe active
-        btn.addEventListener('mousedown', (e) => {
-            e.preventDefault();
-        });
-        
-        btn.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-        });
-        
         btn.addEventListener('click', (e) => {
-            e.preventDefault();
             handleAnswer(parseInt(btn.dataset.index));
         });
     });
