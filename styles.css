@@ -68,6 +68,19 @@ html, body {
     overflow: hidden;
 }
 
+/* Sur mobile, permettre le scroll */
+@media (max-width: 599.98px) {
+    #app {
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    
+    #quiz-screen {
+        height: auto;
+        min-height: calc(100vh - 50px);
+    }
+}
+
 .screen {
     display: none;
     height: 100%;
