@@ -230,6 +230,42 @@ html, body {
     filter: brightness(0) invert(1);
 }
 
+/* Cards de filtres */
+.filter-card {
+    cursor: pointer;
+    padding: 0.75rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    background: #f8f9fa;  /* Gris perle très léger */
+    text-align: center;
+    font-size: 0.9rem;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.filter-card:hover {
+    border-color: #667eea;
+    background: #f0f0f0;  /* Gris légèrement plus foncé au survol */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.filter-card.selected {
+    border-color: #667eea;
+    background: #667eea;
+    color: white;
+}
+
+#filtersTabContent {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
 .score-display {
     background: white;
     border-radius: 15px;
@@ -352,6 +388,7 @@ html, body {
         margin: 0 !important;
         padding: 0.4rem 0.5rem !important;
         background: #f8f9fa;
+        margin-top: 0.5rem !important;  /* Espace entre l'image et la barre */
     }
     
     #question-title {
@@ -402,9 +439,14 @@ html, body {
         margin-bottom: 1.5rem;
     }
     
-    /* Boutons empilés avec espacement réduit */
+    /* Empêcher artists-container de prendre tout l'espace vertical */
+    #artists-container {
+        flex-grow: 0 !important;
+    }
+    
+    /* Réduire l'espacement entre les boutons */
     #artists-container .row {
-        row-gap: 0.35rem !important;
+        row-gap: 0.5rem !important;  /* ~8px d'espacement */
     }
     
     .artist-btn {

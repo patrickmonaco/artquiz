@@ -1,34 +1,54 @@
 // Attendre que le DOM soit chargé
 document.addEventListener('DOMContentLoaded', function() {
 
-// Configuration de l'API
-const API_BASE_URL = 'https://rome.gotocity.eu/ords/demo/artquiz_api';
+// Configuration de l'API (accessible globalement pour filters.js)
+window.API_BASE_URL = 'https://rome.gotocity.eu/ords/demo/artquiz_api';
+const API_BASE_URL = window.API_BASE_URL;
 
-// État de l'application
-const appState = {
+// État de l'application (accessible globalement)
+window.appState = {
     category: 'Peintures', // Valeur par défaut
     itemCount: 5, // Valeur par défaut
     level: 3, // Niveau par défaut (1, 2 ou 3)
     artworks: [],
     currentIndex: 0,
     answers: [],
-    currentArtists: []
+    currentArtists: [],
+    // Nouveaux filtres
+    filters: {
+        artiste: null,  // {nom: "...", nom: "..."}
+        genre: null,    // {entity: "...", lib_fr: "..."}
+        ecole: null     // {entity: "...", lib_fr: "..."}
+    },
+    artistMode: false  // Mode quiz artiste spécifique (Oui/Non)
 };
+const appState = window.appState;
 
 // Éléments DOM
-const selectionScreen = document.getElementById('selection-screen');
-const quizScreen = document.getElementById('quiz-screen');
+window.selectionScreen = document.getElementById('selection-screen'); // Global pour artist-mode.js
+const selectionScreen = window.selectionScreen;
+window.quizScreen = document.getElementById('quiz-screen'); // Global pour filters.js
+const quizScreen = window.quizScreen;
 const resultsScreen = document.getElementById('results-screen');
-const startBtn = document.getElementById('start-btn');
+window.startBtn = document.getElementById('start-btn'); // Global pour filters.js
+const startBtn = window.startBtn;
 const categoryBtns = document.querySelectorAll('.category-btn');
-const artistBtns = document.querySelectorAll('.artist-btn');
-const artworkImage = document.getElementById('artwork-image');
-const artworkLoading = document.getElementById('artwork-loading');
-const loadingArtists = document.getElementById('loading-artists');
-const artistsContainer = document.getElementById('artists-container');
-const currentQuestionEl = document.getElementById('current-question');
-const totalQuestionsEl = document.getElementById('total-questions');
-const progressBar = document.getElementById('progress-bar');
+window.artistBtns = document.querySelectorAll('.artist-btn'); // Global pour artist-mode.js
+const artistBtns = window.artistBtns;
+window.artworkImage = document.getElementById('artwork-image'); // Global pour artist-mode.js
+const artworkImage = window.artworkImage;
+window.artworkLoading = document.getElementById('artwork-loading'); // Global pour artist-mode.js
+const artworkLoading = window.artworkLoading;
+window.loadingArtists = document.getElementById('loading-artists'); // Global pour artist-mode.js
+const loadingArtists = window.loadingArtists;
+window.artistsContainer = document.getElementById('artists-container'); // Global pour artist-mode.js
+const artistsContainer = window.artistsContainer;
+window.currentQuestionEl = document.getElementById('current-question'); // Global pour artist-mode.js
+const currentQuestionEl = window.currentQuestionEl;
+window.totalQuestionsEl = document.getElementById('total-questions'); // Global pour filters.js
+const totalQuestionsEl = window.totalQuestionsEl;
+window.progressBar = document.getElementById('progress-bar'); // Global pour artist-mode.js
+const progressBar = window.progressBar;
 const scoreEl = document.getElementById('score');
 const scoreMessage = document.getElementById('score-message');
 const resultsList = document.getElementById('results-list');
@@ -37,10 +57,14 @@ const replayBtn = document.getElementById('replay-btn');
 // Éléments de réglages et aide
 const settingsBtn = document.getElementById('settings-btn');
 const helpBtn = document.getElementById('help-btn');
+const filtersBtn = document.getElementById('filters-btn');
 const settingsModal = new bootstrap.Modal(document.getElementById('settingsModal'));
 const helpModal = new bootstrap.Modal(document.getElementById('helpModal'));
+window.filtersModal = new bootstrap.Modal(document.getElementById('filtersModal')); // Global pour filters.js
+const filtersModal = window.filtersModal;
 const seriesSizeBtns = document.querySelectorAll('.series-size-btn');
 const levelBtns = document.querySelectorAll('.level-btn');
+const clearFiltersBtn = document.getElementById('clear-filters-btn');
 
 console.log('DOM chargé, initialisation...');
 console.log('quizScreen:', quizScreen);
@@ -61,6 +85,34 @@ function init() {
     
     helpBtn.addEventListener('click', () => {
         helpModal.show();
+    });
+    
+    // Gestion du clic sur le titre pour retourner à l'accueil
+    document.getElementById('app-title-link').addEventListener('click', () => {
+        resetApp();
+        showScreen(selectionScreen);
+    });
+    
+    // Gestion de la modale des filtres
+    filtersBtn.addEventListener('click', () => {
+        window.loadFilters(appState.category);
+        filtersModal.show();
+    });
+    
+    // Gestion du bouton effacer les filtres
+    clearFiltersBtn.addEventListener('click', () => {
+        clearAllFilters();
+    });
+    
+    // Charger les filtres lors du changement d'onglet
+    document.getElementById('artistes-tab').addEventListener('shown.bs.tab', () => {
+        window.loadArtistes(appState.category);
+    });
+    document.getElementById('genres-tab').addEventListener('shown.bs.tab', () => {
+        window.loadGenres(appState.category);
+    });
+    document.getElementById('ecoles-tab').addEventListener('shown.bs.tab', () => {
+        window.loadEcoles(appState.category);
     });
     
     // Gestion des boutons de taille de série
@@ -96,7 +148,12 @@ function init() {
     // Gestion des réponses
     artistBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
-            handleAnswer(parseInt(btn.dataset.index));
+            const index = parseInt(btn.dataset.index);
+            if (appState.artistMode) {
+                handleAnswerArtistMode(index);
+            } else {
+                handleAnswer(index);
+            }
         });
     });
 
@@ -126,7 +183,8 @@ function updateSettingsUI() {
     });
 }
 
-function showScreen(screen) {
+// Fonction pour afficher un écran (accessible globalement pour filters.js)
+window.showScreen = function(screen) {
     console.log('showScreen appelé avec:', screen);
     document.querySelectorAll('.screen').forEach(s => {
         console.log('Écran:', s.id, 'classList:', s.classList.value);
@@ -134,7 +192,8 @@ function showScreen(screen) {
     });
     screen.classList.add('active');
     console.log('Écran activé:', screen.id, 'classList:', screen.classList.value);
-}
+};
+const showScreen = window.showScreen;
 
 async function startQuiz() {
     try {
@@ -197,7 +256,13 @@ async function startQuiz() {
     }
 }
 
-async function loadCurrentQuestion() {
+// Fonction pour charger la question actuelle (accessible globalement pour filters.js)
+window.loadCurrentQuestion = async function() {
+    // Si on est en mode artiste, utiliser la fonction dédiée
+    if (appState.artistMode) {
+        return loadCurrentQuestionArtistMode();
+    }
+    
     const artwork = appState.artworks[appState.currentIndex];
     
     // Mettre à jour la progression
@@ -297,6 +362,7 @@ async function loadCurrentQuestion() {
         }
     }
 }
+const loadCurrentQuestion = window.loadCurrentQuestion;
 
 function handleAnswer(buttonIndex) {
     const artwork = appState.artworks[appState.currentIndex];
@@ -343,7 +409,8 @@ function handleAnswer(buttonIndex) {
     }, 1500);
 }
 
-function nextQuestion() {
+// Passer à la question suivante (accessible globalement pour artist-mode.js)
+window.nextQuestion = function() {
     appState.currentIndex++;
     
     if (appState.currentIndex < appState.artworks.length) {
@@ -413,7 +480,8 @@ function showResults() {
     showScreen(resultsScreen);
 }
 
-function resetApp() {
+// Réinitialiser l'application (accessible globalement pour artist-mode.js)
+window.resetApp = function() {
     appState.category = 'Peintures'; // Remettre Peintures par défaut
     appState.itemCount = 5;
     appState.level = 3;
@@ -422,12 +490,23 @@ function resetApp() {
     appState.answers = [];
     appState.currentArtists = [];
     
+    // Réinitialiser les filtres
+    appState.filters = {
+        artiste: null,
+        genre: null,
+        ecole: null
+    };
+    appState.artistMode = false;
+    
     // Réinitialiser les boutons de sélection
     categoryBtns.forEach(b => b.classList.remove('active'));
     categoryBtns[0].classList.add('active'); // Sélectionner Peintures par défaut
     
     // Réinitialiser les réglages
     updateSettingsUI();
+    
+    // Réafficher tous les boutons (au cas où on était en mode artiste)
+    artistBtns.forEach(btn => btn.classList.remove('d-none'));
     
     startBtn.disabled = false; // Activer le bouton
     startBtn.textContent = 'Commencer le quiz';
