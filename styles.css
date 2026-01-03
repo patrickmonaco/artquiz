@@ -340,7 +340,7 @@ html, body {
     
     .image-column {
         order: 0 !important;
-        height: 42vh !important;  /* Augmenté de 38vh à 42vh (+1cm environ) */
+        height: 50vh !important;  /* Augmenté de 42vh à 50vh (+2cm environ) */
         min-height: 260px !important;
     }
     
@@ -369,7 +369,7 @@ html, body {
     }
     
     #artwork-image {
-        max-height: 42vh;  /* Augmenté de 38vh à 42vh */
+        max-height: 50vh;  /* Augmenté de 42vh à 50vh */
         margin: 0 !important;
         padding: 0 !important;
     }
@@ -377,12 +377,6 @@ html, body {
     #artwork-loading {
         margin: 0 !important;
         padding: 0 !important;
-    }
-    
-    .artist-btn {
-        min-height: 56px;
-        font-size: 0.9rem;
-        padding: 10px;
     }
     
     /* L'en-tête du quiz doit être minimaliste */
@@ -411,10 +405,27 @@ html, body {
         padding: 0.25rem 0.5rem 0.5rem 0.5rem !important;
     }
     
-    /* Réduire l'espace entre les boutons */
+    /* Grille 2x2 pour les boutons sur mobile */
     #artists-container .row {
-        row-gap: 0.25rem !important;
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;  /* 2 colonnes */
+        grid-template-rows: 1fr 1fr !important;     /* 2 lignes */
+        gap: 0.4rem !important;  /* Espacement entre les boutons */
         margin: 0 !important;
+    }
+    
+    /* Chaque bouton prend 1 cellule */
+    #artists-container .col-12 {
+        grid-column: span 1 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    /* Boutons plus compacts avec police réduite */
+    .artist-btn {
+        min-height: 70px !important;  /* Hauteur ajustée pour 2x2 */
+        font-size: 0.85rem !important;  /* Police légèrement plus petite */
+        padding: 8px !important;
     }
     
     /* Le spinner de chargement */
