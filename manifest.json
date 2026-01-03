@@ -2,14 +2,15 @@
   "name": "ArtQuiz - Devinez l'artiste",
   "short_name": "ArtQuiz",
   "description": "Quiz sur les œuvres d'art du Louvre",
-  "start_url": "/",
+  "start_url": "/artquiz/",
+  "scope": "/artquiz/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#667eea",
   "orientation": "any",
   "icons": [
     {
-      "src": "artquiz.png",
+      "src": "/artquiz/artquiz.png",
       "sizes": "any",
       "type": "image/png",
       "purpose": "any maskable"
