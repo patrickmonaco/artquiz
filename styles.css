@@ -138,6 +138,12 @@ html, body {
     height: 100%;
     object-fit: contain;
     max-height: calc(100vh - 60px);  /* 100vh - bandeau (50px) - marge (10px) */
+    cursor: pointer;  /* Indiquer que l'image est cliquable */
+    transition: opacity 0.2s ease;
+}
+
+#artwork-image:hover {
+    opacity: 0.9;  /* Léger effet au survol */
 }
 
 .artist-btn {
@@ -164,22 +170,27 @@ html, body {
     outline: none !important;
 }
 
-/* FORCER le fond blanc sur tous les états */
+/* FORCER le fond gris sur tous les états - MÊME .active */
 .artist-btn:not(.correct):not(.incorrect),
 .artist-btn:not(.correct):not(.incorrect):focus,
 .artist-btn:not(.correct):not(.incorrect):active,
 .artist-btn:not(.correct):not(.incorrect).active,
-.artist-btn:not(.correct):not(.incorrect).show {
+.artist-btn:not(.correct):not(.incorrect).show,
+.artist-btn.active:not(.correct):not(.incorrect),
+.artist-btn:active:not(.correct):not(.incorrect) {
     background-color: #e8e9ea !important;  /* Gris plus foncé */
     color: #333 !important;
     border-color: #c0c0c0 !important;  /* Bordure aussi légèrement plus foncée */
+    box-shadow: none !important;  /* Pas d'ombre */
 }
 
 .artist-btn:hover:not(:disabled):not(.correct):not(.incorrect) {
-    transform: scale(1.02);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    background-color: #d0d1d2 !important;  /* Gris plus foncé au survol */
-    border-color: #a0a0a0 !important;
+    /* Pas d'effet hover - tous les boutons restent identiques */
+    background-color: #e8e9ea !important;
+    color: #333 !important;
+    border-color: #c0c0c0 !important;
+    box-shadow: none !important;
+    transform: none !important;  /* Pas d'agrandissement */
 }
 
 .artist-btn:disabled {
@@ -423,8 +434,8 @@ html, body {
     
     /* Boutons plus compacts avec police réduite */
     .artist-btn {
-        min-height: 70px !important;  /* Hauteur ajustée pour 2x2 */
-        font-size: 0.85rem !important;  /* Police légèrement plus petite */
+        min-height: 70px !important;
+        font-size: 0.85rem !important;
         padding: 8px !important;
     }
     

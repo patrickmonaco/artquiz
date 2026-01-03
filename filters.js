@@ -358,8 +358,11 @@ window.startQuizWithFilters = async function() {
                        window.appState.filters.periode;
     const niveau = hasFilters ? 1 : window.appState.level;
     
+    // Si un artiste est sélectionné, forcer la série à 10
+    const serie = window.appState.filters.artiste ? 10 : window.appState.itemCount;
+    
     // Construire l'URL avec les filtres
-    let url = `${window.API_BASE_URL}/${window.appState.category}/random_items?PSERIE=${window.appState.itemCount}&PNIVEAU=${niveau}`;
+    let url = `${window.API_BASE_URL}/${window.appState.category}/random_items?PSERIE=${serie}&PNIVEAU=${niveau}`;
     
     if (window.appState.filters.artiste) {
         url += `&pnom=${encodeURIComponent(window.appState.filters.artiste.nom)}`;

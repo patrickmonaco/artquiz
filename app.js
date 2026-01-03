@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 
 // Configuration de l'API (accessible globalement pour filters.js)
-window.API_BASE_URL = 'https://zwgpvlahytdg6cg-db202002021813.adb.eu-frankfurt-1.oraclecloudapps.com/ords/demo/artquiz_api';
+window.API_BASE_URL = 'https://rome.gotocity.eu/ords/demo/artquiz_api';
 const API_BASE_URL = window.API_BASE_URL;
 
 // État de l'application (accessible globalement)
@@ -92,6 +92,16 @@ function init() {
     document.getElementById('app-title-link').addEventListener('click', () => {
         resetApp();
         showScreen(selectionScreen);
+    });
+    
+    // Gestion du clic sur l'image pour l'agrandir (lightbox)
+    const imageModal = new bootstrap.Modal(document.getElementById('imageModal'));
+    const modalImage = document.getElementById('modal-image');
+    
+    artworkImage.addEventListener('click', () => {
+        // Copier l'image dans la modale
+        modalImage.src = artworkImage.src;
+        imageModal.show();
     });
     
     // Gestion de la modale des filtres
@@ -316,6 +326,7 @@ window.loadCurrentQuestion = async function() {
     setTimeout(() => {
         artistBtns.forEach(btn => {
             btn.classList.remove('active');
+            btn.blur();
         });
     }, 50);
 
