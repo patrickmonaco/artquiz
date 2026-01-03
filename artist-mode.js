@@ -5,7 +5,7 @@ async function loadCurrentQuestionArtistMode() {
     
     // Mettre à jour la progression
     window.currentQuestionEl.textContent = window.appState.currentIndex + 1;
-    const progressPercent = ((window.appState.currentIndex + 1) / window.appState.itemCount) * 100;
+    const progressPercent = ((window.appState.currentIndex + 1) / window.appState.artworks.length) * 100;
     window.progressBar.style.width = `${progressPercent}%`;
 
     // Réinitialiser l'interface

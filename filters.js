@@ -361,6 +361,11 @@ window.startQuizWithFilters = async function() {
     // Si un artiste est sélectionné, forcer la série à 10
     const serie = window.appState.filters.artiste ? 10 : window.appState.itemCount;
     
+    // Mettre à jour itemCount dans appState pour que la barre de progression soit correcte
+    if (window.appState.filters.artiste) {
+        window.appState.itemCount = 10;
+    }
+    
     // Construire l'URL avec les filtres
     let url = `${window.API_BASE_URL}/${window.appState.category}/random_items?PSERIE=${serie}&PNIVEAU=${niveau}`;
     

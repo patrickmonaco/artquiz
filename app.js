@@ -305,7 +305,7 @@ window.loadCurrentQuestion = async function() {
     
     // Mettre à jour la progression
     currentQuestionEl.textContent = appState.currentIndex + 1;
-    const progressPercent = ((appState.currentIndex + 1) / appState.itemCount) * 100;
+    const progressPercent = ((appState.currentIndex + 1) / appState.artworks.length) * 100;
     progressBar.style.width = `${progressPercent}%`;
 
     // Réinitialiser l'interface
