@@ -142,6 +142,7 @@ html, body {
 
 .artist-btn {
     font-size: 1.1rem;
+    font-weight: 700;  /* Texte en gras (bold) */
     padding: 20px;
     transition: all 0.3s ease;
     border-width: 2px;
@@ -169,16 +170,16 @@ html, body {
 .artist-btn:not(.correct):not(.incorrect):active,
 .artist-btn:not(.correct):not(.incorrect).active,
 .artist-btn:not(.correct):not(.incorrect).show {
-    background-color: white !important;
+    background-color: #e8e9ea !important;  /* Gris plus foncé */
     color: #333 !important;
-    border-color: #d0d0d0 !important;
+    border-color: #c0c0c0 !important;  /* Bordure aussi légèrement plus foncée */
 }
 
 .artist-btn:hover:not(:disabled):not(.correct):not(.incorrect) {
     transform: scale(1.02);
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    background-color: #f8f9fa !important;
-    border-color: #b0b0b0 !important;
+    background-color: #d0d1d2 !important;  /* Gris plus foncé au survol */
+    border-color: #a0a0a0 !important;
 }
 
 .artist-btn:disabled {

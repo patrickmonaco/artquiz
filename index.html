@@ -120,6 +120,11 @@
                                 Écoles
                             </button>
                         </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="periodes-tab" data-bs-toggle="tab" data-bs-target="#periodes" type="button" role="tab">
+                                Périodes
+                            </button>
+                        </li>
                     </ul>
                     
                     <!-- Contenu des onglets -->
@@ -152,6 +157,34 @@
                                 </div>
                             </div>
                             <div id="ecoles-list" class="row g-2"></div>
+                        </div>
+                        
+                        <!-- Onglet Périodes -->
+                        <div class="tab-pane fade" id="periodes" role="tabpanel">
+                            <!-- Étape 1 : Choix du siècle -->
+                            <div id="siecles-section">
+                                <h6 class="mb-3">Choisissez un siècle :</h6>
+                                <div id="siecles-loading" class="text-center py-4">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Chargement...</span>
+                                    </div>
+                                </div>
+                                <div id="siecles-list" class="row g-2"></div>
+                            </div>
+                            
+                            <!-- Étape 2 : Choix du pays -->
+                            <div id="pays-section" style="display: none;">
+                                <button id="back-to-siecles" class="btn btn-sm btn-outline-secondary mb-3">
+                                    <i class="bi bi-arrow-left"></i> Retour aux siècles
+                                </button>
+                                <h6 class="mb-3">Choisissez un pays :</h6>
+                                <div id="pays-loading" class="text-center py-4">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Chargement...</span>
+                                    </div>
+                                </div>
+                                <div id="pays-list" class="row g-2"></div>
+                            </div>
                         </div>
                     </div>
                 </div>

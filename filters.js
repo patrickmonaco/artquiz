@@ -115,6 +115,154 @@ window.loadEcoles = async function(category) {
     }
 }
 
+// Charger la liste des siècles
+window.loadSiecles = async function() {
+    const loadingEl = document.getElementById('siecles-loading');
+    const listEl = document.getElementById('siecles-list');
+    
+    try {
+        loadingEl.classList.remove('d-none');
+        listEl.innerHTML = '';
+        
+        const response = await fetch(`${window.API_BASE_URL}/lov/siecle`);
+        const data = await response.json();
+        
+        console.log('Siècles reçus:', data);
+        
+        loadingEl.classList.add('d-none');
+        
+        if (data.items && data.items.length > 0) {
+            data.items.forEach(item => {
+                const card = createSiecleCard(item.lib, item.id);
+                listEl.appendChild(card);
+            });
+        } else {
+            listEl.innerHTML = '<p class="text-muted">Aucun siècle disponible</p>';
+        }
+    } catch (error) {
+        console.error('Erreur chargement siècles:', error);
+        loadingEl.classList.add('d-none');
+        listEl.innerHTML = '<p class="text-danger">Erreur de chargement</p>';
+    }
+};
+
+// Créer une card pour un siècle
+function createSiecleCard(lib, id) {
+    const col = document.createElement('div');
+    col.className = 'col-6 col-md-4 col-lg-3';
+    
+    const card = document.createElement('div');
+    card.className = 'filter-card';
+    card.textContent = lib;
+    card.title = lib;
+    
+    card.addEventListener('click', () => {
+        selectSiecle(lib, id);
+    });
+    
+    col.appendChild(card);
+    return col;
+}
+
+// Sélectionner un siècle et charger les pays
+function selectSiecle(lib, siecle) {
+    console.log('Siècle sélectionné:', lib, siecle);
+    
+    // Sauvegarder le siècle sélectionné
+    window.selectedSiecle = { lib: lib, siecle: siecle };
+    
+    // Masquer la section siècles et afficher la section pays
+    document.getElementById('siecles-section').style.display = 'none';
+    document.getElementById('pays-section').style.display = 'block';
+    
+    // Charger les pays pour ce siècle
+    loadPays(window.appState.category, siecle);
+}
+
+// Charger la liste des pays pour un siècle
+async function loadPays(category, siecle) {
+    const loadingEl = document.getElementById('pays-loading');
+    const listEl = document.getElementById('pays-list');
+    
+    try {
+        loadingEl.classList.remove('d-none');
+        listEl.innerHTML = '';
+        
+        const response = await fetch(`${window.API_BASE_URL}/${category}/${siecle}/pays`);
+        const data = await response.json();
+        
+        console.log('Pays reçus:', data);
+        
+        loadingEl.classList.add('d-none');
+        
+        if (data.items && data.items.length > 0) {
+            data.items.forEach(item => {
+                const card = createPaysCard(item.lib, item.code, siecle);
+                listEl.appendChild(card);
+            });
+        } else {
+            listEl.innerHTML = '<p class="text-muted">Aucun pays disponible pour ce siècle</p>';
+        }
+    } catch (error) {
+        console.error('Erreur chargement pays:', error);
+        loadingEl.classList.add('d-none');
+        listEl.innerHTML = '<p class="text-danger">Erreur de chargement</p>';
+    }
+}
+
+// Créer une card pour un pays
+function createPaysCard(lib, code, siecle) {
+    const col = document.createElement('div');
+    col.className = 'col-6 col-md-4 col-lg-3';
+    
+    const card = document.createElement('div');
+    card.className = 'filter-card';
+    
+    // Tronquer le texte à 40 caractères
+    const truncatedText = lib.length > 40 
+        ? lib.substring(0, 40) + '...' 
+        : lib;
+    
+    card.textContent = truncatedText;
+    card.title = lib;
+    
+    card.addEventListener('click', () => {
+        selectPays(lib, code, siecle);
+    });
+    
+    col.appendChild(card);
+    return col;
+}
+
+// Sélectionner un pays et démarrer le quiz
+function selectPays(lib, code, siecle) {
+    console.log('Pays sélectionné:', lib, code, 'Siècle:', siecle);
+    
+    // Sauvegarder la sélection dans les filtres
+    window.appState.filters.periode = {
+        pays_lib: lib,
+        pays_code: code,
+        siecle: siecle
+    };
+    
+    // Fermer la modale et démarrer le quiz
+    window.filtersModal.hide();
+    startQuizWithFilters();
+}
+
+// Bouton retour aux siècles
+document.addEventListener('DOMContentLoaded', function() {
+    const backBtn = document.getElementById('back-to-siecles');
+    if (backBtn) {
+        backBtn.addEventListener('click', () => {
+            document.getElementById('pays-section').style.display = 'none';
+            document.getElementById('siecles-section').style.display = 'block';
+            window.selectedSiecle = null;
+        });
+    }
+});
+
+
 // Créer une card de filtre
 function createFilterCard(displayText, key, filterType, data) {
     const col = document.createElement('div');
@@ -180,7 +328,8 @@ function clearAllFilters() {
     window.appState.filters = {
         artiste: null,
         genre: null,
-        ecole: null
+        ecole: null,
+        periode: null
     };
     window.appState.artistMode = false;
     
@@ -189,16 +338,24 @@ function clearAllFilters() {
         card.classList.remove('selected');
     });
     
+    // Réinitialiser l'affichage de l'onglet Périodes
+    document.getElementById('siecles-section').style.display = 'block';
+    document.getElementById('pays-section').style.display = 'none';
+    window.selectedSiecle = null;
+    
     console.log('Filtres effacés');
 }
 
-// Démarrer le quiz avec les filtres
-async function startQuizWithFilters() {
+// Démarrer le quiz avec les filtres (accessible globalement pour replay)
+window.startQuizWithFilters = async function() {
     console.log('Démarrage du quiz avec filtres:', window.appState.filters);
     console.log('Mode artiste:', window.appState.artistMode);
     
     // Si on a des filtres, forcer le niveau à 1
-    const hasFilters = window.appState.filters.artiste || window.appState.filters.genre || window.appState.filters.ecole;
+    const hasFilters = window.appState.filters.artiste || 
+                       window.appState.filters.genre || 
+                       window.appState.filters.ecole ||
+                       window.appState.filters.periode;
     const niveau = hasFilters ? 1 : window.appState.level;
     
     // Construire l'URL avec les filtres
@@ -212,6 +369,10 @@ async function startQuizWithFilters() {
     }
     if (window.appState.filters.ecole) {
         url += `&pecole=${encodeURIComponent(window.appState.filters.ecole.entity)}`;
+    }
+    if (window.appState.filters.periode) {
+        url += `&ppays=${encodeURIComponent(window.appState.filters.periode.pays_code)}`;
+        url += `&psiecle=${window.appState.filters.periode.siecle}`;
     }
     
     console.log('URL API:', url);

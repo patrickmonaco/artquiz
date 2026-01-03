@@ -18,7 +18,8 @@ window.appState = {
     filters: {
         artiste: null,  // {nom: "...", nom: "..."}
         genre: null,    // {entity: "...", lib_fr: "..."}
-        ecole: null     // {entity: "...", lib_fr: "..."}
+        ecole: null,    // {entity: "...", lib_fr: "..."}
+        periode: null   // {pays_lib: "...", pays_code: "...", siecle: ...}
     },
     artistMode: false  // Mode quiz artiste spécifique (Oui/Non)
 };
@@ -114,6 +115,12 @@ function init() {
     document.getElementById('ecoles-tab').addEventListener('shown.bs.tab', () => {
         window.loadEcoles(appState.category);
     });
+    document.getElementById('periodes-tab').addEventListener('shown.bs.tab', () => {
+        // Réinitialiser l'affichage à la sélection des siècles
+        document.getElementById('siecles-section').style.display = 'block';
+        document.getElementById('pays-section').style.display = 'none';
+        window.loadSiecles();
+    });
     
     // Gestion des boutons de taille de série
     seriesSizeBtns.forEach(btn => {
@@ -159,8 +166,28 @@ function init() {
 
     // Rejouer
     replayBtn.addEventListener('click', () => {
-        resetApp();
-        showScreen(selectionScreen);
+        // Sauvegarder les filtres actuels
+        const savedFilters = { ...appState.filters };
+        const savedArtistMode = appState.artistMode;
+        
+        // Réinitialiser seulement les réponses et l'index
+        appState.artworks = [];
+        appState.currentIndex = 0;
+        appState.answers = [];
+        appState.currentArtists = [];
+        
+        // Restaurer les filtres
+        appState.filters = savedFilters;
+        appState.artistMode = savedArtistMode;
+        
+        // Relancer le quiz avec les mêmes paramètres
+        if (savedFilters.artiste || savedFilters.genre || savedFilters.ecole || savedFilters.periode) {
+            // Si on a des filtres, utiliser startQuizWithFilters
+            startQuizWithFilters();
+        } else {
+            // Sinon, utiliser startQuiz normal
+            startQuiz();
+        }
     });
 }
 
@@ -195,7 +222,8 @@ window.showScreen = function(screen) {
 };
 const showScreen = window.showScreen;
 
-async function startQuiz() {
+// Fonction pour démarrer le quiz (accessible globalement pour replay)
+window.startQuiz = async function() {
     try {
         // Validation
         if (!appState.category) {
@@ -309,7 +337,18 @@ window.loadCurrentQuestion = async function() {
         // Charger les artistes
         // On utilise le nom de l'artiste de l'œuvre (artwork.nom)
         const artistName = artwork.nom || '';
-        const artistUrl = `${API_BASE_URL}/${appState.category}/random_artistes?pnom=${encodeURIComponent(artistName)}`;
+        let artistUrl = `${API_BASE_URL}/${appState.category}/random_artistes?pnom=${encodeURIComponent(artistName)}`;
+        
+        // Déterminer le niveau : forcer à 1 si filtres actifs (ecole, genre ou periode)
+        const hasFilters = appState.filters.ecole || appState.filters.genre || appState.filters.periode;
+        const niveau = hasFilters ? 1 : appState.level;
+        artistUrl += `&pniveau=${niveau}`;
+        
+        // Ajouter le filtre pays si une période est sélectionnée
+        if (appState.filters.periode && appState.filters.periode.pays_code) {
+            artistUrl += `&ppays=${encodeURIComponent(appState.filters.periode.pays_code)}`;
+        }
+        
         console.log('Appel artistes:', artistUrl);
         
         const response = await fetch(artistUrl);
@@ -494,7 +533,8 @@ window.resetApp = function() {
     appState.filters = {
         artiste: null,
         genre: null,
-        ecole: null
+        ecole: null,
+        periode: null
     };
     appState.artistMode = false;
     
