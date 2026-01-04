@@ -149,7 +149,7 @@ window.loadSiecles = async function() {
 // Créer une card pour un siècle
 function createSiecleCard(lib, id) {
     const col = document.createElement('div');
-    col.className = 'col-6 col-md-4 col-lg-3';
+    col.className = 'col-12 col-md-6';  // 2 colonnes
     
     const card = document.createElement('div');
     card.className = 'filter-card';
@@ -213,7 +213,7 @@ async function loadPays(category, siecle) {
 // Créer une card pour un pays
 function createPaysCard(lib, code, siecle) {
     const col = document.createElement('div');
-    col.className = 'col-6 col-md-4 col-lg-3';
+    col.className = 'col-12 col-md-6';  // 2 colonnes
     
     const card = document.createElement('div');
     card.className = 'filter-card';
@@ -266,7 +266,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Créer une card de filtre
 function createFilterCard(displayText, key, filterType, data) {
     const col = document.createElement('div');
-    col.className = 'col-6 col-md-4 col-lg-3';
+    col.className = 'col-12 col-md-6';  // 2 colonnes au lieu de 4
     
     const card = document.createElement('div');
     card.className = 'filter-card';
@@ -276,7 +276,21 @@ function createFilterCard(displayText, key, filterType, data) {
         ? displayText.substring(0, 40) + '...' 
         : displayText;
     
-    card.textContent = truncatedText;
+    // Créer le contenu de la card avec le texte et le badge
+    const textSpan = document.createElement('span');
+    textSpan.className = 'filter-card-text';
+    textSpan.textContent = truncatedText;
+    
+    card.appendChild(textSpan);
+    
+    // Ajouter le badge avec le nombre d'œuvres si disponible
+    if (data.nb !== undefined && data.nb !== null) {
+        const badge = document.createElement('span');
+        badge.className = 'badge bg-primary filter-card-badge';
+        badge.textContent = data.nb;
+        card.appendChild(badge);
+    }
+    
     card.title = displayText; // Afficher le texte complet au survol
     card.dataset.filterType = filterType;
     card.dataset.key = key;
