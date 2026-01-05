@@ -296,8 +296,14 @@ function createFilterCard(displayText, key, filterType, data) {
     card.dataset.key = key;
     
     // Vérifier si ce filtre est déjà sélectionné
-    if (window.appState.filters[filterType] && window.appState.filters[filterType][key] === data[key]) {
-        card.classList.add('selected');
+    // window.appState.filters[filterType] contient l'objet complet sélectionné
+    // On compare la clé (nom, code, etc.) avec la clé de cet objet
+    if (window.appState.filters[filterType]) {
+        const selectedItem = window.appState.filters[filterType];
+        // Comparer la valeur de la clé (ex: selectedItem.nom === data.nom)
+        if (selectedItem[key] === data[key]) {
+            card.classList.add('selected');
+        }
     }
     
     card.addEventListener('click', () => {

@@ -508,19 +508,29 @@ function showResults() {
         const artwork = answer.artwork;
         const correctArtistName = answer.correctArtistName || artwork.nom || 'Inconnu';
         
+        // Construire le nom de l'artiste avec la date si disponible
+        let artistDisplay = correctArtistName;
+        if (artwork.dd) {
+            artistDisplay += ` (${artwork.dd})`;
+        }
+        
         const card = document.createElement('div');
-        card.className = 'col-12 col-md-6 col-lg-4';
+        card.className = 'col-12';  // Une card par ligne
         card.innerHTML = `
-            <div class="result-card">
-                <img src="${artwork.img_url}" alt="${artwork.titre}" 
-                     onclick="window.open('https://collections.louvre.fr/ark:/53355/${artwork.ark}', '_blank')">
-                <h5>${artwork.titre || 'Sans titre'}</h5>
-                <p><strong>${correctArtistName}</strong></p>
-                ${artwork.autre ? `<p class="text-muted small">${artwork.autre}</p>` : ''}
-                <div class="mt-2">
-                    ${answer.isCorrect 
-                        ? '<span class="badge bg-success">✓ Correct</span>' 
-                        : '<span class="badge bg-danger">✗ Incorrect</span>'}
+            <div class="result-card-horizontal">
+                <div class="result-image-container">
+                    <img src="${artwork.img_url}" alt="${artwork.titre}" 
+                         onclick="window.open('https://collections.louvre.fr/ark:/53355/${artwork.ark}', '_blank')">
+                </div>
+                <div class="result-info">
+                    <h5>${artwork.titre || 'Sans titre'}</h5>
+                    <p><strong>${artistDisplay}</strong></p>
+                    ${artwork.autre ? `<p class="text-muted small">${artwork.autre}</p>` : ''}
+                    <div class="mt-2">
+                        ${answer.isCorrect 
+                            ? '<span class="badge bg-success">✓ Correct</span>' 
+                            : '<span class="badge bg-danger">✗ Incorrect</span>'}
+                    </div>
                 </div>
             </div>
         `;

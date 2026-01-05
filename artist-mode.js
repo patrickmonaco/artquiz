@@ -114,26 +114,18 @@ function handleAnswerArtistMode(buttonIndex) {
         isCorrect: isCorrect
     });
 
-    // Désactiver les boutons et montrer le feedback
+    // Désactiver les boutons SANS montrer le feedback visuel en mode artiste
     window.artistBtns.forEach((btn, idx) => {
         if (idx < 2) { // Seulement les 2 premiers boutons
             btn.disabled = true;
             
-            const btnIsYes = btn.dataset.isYes === 'true';
-            const shouldBeYes = isCorrectArtist;
-            
-            if ((btnIsYes && shouldBeYes) || (!btnIsYes && !shouldBeYes)) {
-                btn.classList.add('correct');
-            } else if (btn === selectedBtn) {
-                btn.classList.add('incorrect');
-            } else {
-                btn.classList.add('not-selected');
-            }
+            // NE PAS ajouter de classes correct/incorrect/not-selected
+            // Pour garder tous les boutons avec la même apparence
         }
     });
 
-    // Passer à la question suivante après un délai
+    // Passer à la question suivante après un délai plus court
     setTimeout(() => {
         window.nextQuestion();
-    }, 1500);
+    }, 800);  // Réduit de 1500ms à 800ms
 }
