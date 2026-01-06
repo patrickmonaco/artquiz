@@ -296,12 +296,24 @@ function createFilterCard(displayText, key, filterType, data) {
     card.dataset.key = key;
     
     // Vérifier si ce filtre est déjà sélectionné
-    // window.appState.filters[filterType] contient l'objet complet sélectionné
-    // On compare la clé (nom, code, etc.) avec la clé de cet objet
     if (window.appState.filters[filterType]) {
         const selectedItem = window.appState.filters[filterType];
-        // Comparer la valeur de la clé (ex: selectedItem.nom === data.nom)
-        if (selectedItem[key] === data[key]) {
+        
+        // Comparer la valeur de la propriété clé
+        // key peut être 'nom' (artistes), 'entity' (genres), 'code' (écoles), etc.
+        const currentValue = data[key];
+        const selectedValue = selectedItem[key];
+        
+        // Debug
+        console.log('Vérification sélection:', {
+            filterType,
+            key,
+            currentValue,
+            selectedValue,
+            match: currentValue === selectedValue
+        });
+        
+        if (currentValue && selectedValue && currentValue === selectedValue) {
             card.classList.add('selected');
         }
     }
@@ -353,6 +365,12 @@ function clearAllFilters() {
     };
     window.appState.artistMode = false;
     
+    // Restaurer itemCount original si modifié
+    if (window.appState.originalItemCount) {
+        window.appState.itemCount = window.appState.originalItemCount;
+        delete window.appState.originalItemCount;
+    }
+    
     // Retirer la sélection visuelle
     document.querySelectorAll('.filter-card').forEach(card => {
         card.classList.remove('selected');
@@ -363,7 +381,7 @@ function clearAllFilters() {
     document.getElementById('pays-section').style.display = 'none';
     window.selectedSiecle = null;
     
-    console.log('Filtres effacés');
+    console.log('Filtres effacés, itemCount restauré:', window.appState.itemCount);
 }
 
 // Démarrer le quiz avec les filtres (accessible globalement pour replay)
@@ -381,8 +399,11 @@ window.startQuizWithFilters = async function() {
     // Si un artiste est sélectionné, forcer la série à 10
     const serie = window.appState.filters.artiste ? 10 : window.appState.itemCount;
     
-    // Mettre à jour itemCount dans appState pour que la barre de progression soit correcte
+    // Sauvegarder itemCount original avant modification (si pas déjà sauvegardé)
     if (window.appState.filters.artiste) {
+        if (!window.appState.originalItemCount) {
+            window.appState.originalItemCount = window.appState.itemCount;
+        }
         window.appState.itemCount = 10;
     }
     

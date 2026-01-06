@@ -317,7 +317,7 @@ window.loadCurrentQuestion = async function() {
     // Réactiver et réinitialiser les boutons
     artistBtns.forEach(btn => {
         btn.disabled = false;
-        btn.classList.remove('correct', 'incorrect', 'not-selected', 'active');
+        btn.classList.remove('correct', 'incorrect', 'not-selected', 'active', 'd-none');  // Ajouter d-none
         btn.textContent = '';
         btn.blur(); // Forcer le retrait du focus
     });
@@ -558,6 +558,9 @@ window.resetApp = function() {
         periode: null
     };
     appState.artistMode = false;
+    
+    // Nettoyer originalItemCount si présent
+    delete appState.originalItemCount;
     
     // Réinitialiser les boutons de sélection
     categoryBtns.forEach(b => b.classList.remove('active'));
