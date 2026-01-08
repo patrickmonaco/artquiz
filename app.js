@@ -537,8 +537,52 @@ function showResults() {
         resultsList.appendChild(card);
     });
 
+    // Enregistrer les ARKs utilisés dans le quiz
+    // Note: Désactivé car l'enregistrement est maintenant fait côté serveur
+    //       avec PRAGMA AUTONOMOUS_TRANSACTION dans GPM_LOUVRE_PKG.random_items()
+    // sendArksToAPI();
+
     showScreen(resultsScreen);
 }
+
+/*
+// Fonction désactivée - L'enregistrement des ARKs est maintenant fait côté serveur
+// avec PRAGMA AUTONOMOUS_TRANSACTION dans la fonction PL/SQL random_items()
+
+// Envoyer les ARKs utilisés au serveur
+async function sendArksToAPI() {
+    try {
+        // Récupérer tous les ARKs des œuvres du quiz
+        const arks = appState.artworks.map(artwork => artwork.ark).join(',');
+        
+        console.log('Envoi des ARKs au serveur:', arks);
+        
+        // Créer les données du formulaire
+        const formData = new URLSearchParams();
+        formData.append('arks', arks);
+        
+        // Envoyer la requête POST
+        const response = await fetch(`${API_BASE_URL}/tirs`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: formData.toString()
+        });
+        
+        if (response.ok) {
+            console.log('ARKs enregistrés avec succès');
+            const data = await response.json();
+            console.log('Réponse du serveur:', data);
+        } else {
+            console.error('Erreur lors de l\'enregistrement des ARKs:', response.status, response.statusText);
+        }
+    } catch (error) {
+        console.error('Erreur lors de l\'envoi des ARKs:', error);
+        // On ne bloque pas l'affichage des résultats même en cas d'erreur
+    }
+}
+*/
 
 // Réinitialiser l'application (accessible globalement pour artist-mode.js)
 window.resetApp = function() {

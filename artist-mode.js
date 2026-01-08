@@ -90,6 +90,23 @@ function handleAnswerArtistMode(buttonIndex) {
     const isYesButton = selectedBtn.dataset.isYes === 'true';
     const artistName = window.appState.filters.artiste.nom;
     
+    // ⭐ FEEDBACK VISUEL IMMÉDIAT ⭐
+    // 1. Ajouter classe "clicked" pour animation
+    selectedBtn.classList.add('clicked');
+    
+    // Retirer la classe après l'animation (300ms)
+    setTimeout(() => {
+        selectedBtn.classList.remove('clicked');
+    }, 300);
+    
+    // 2. Vibration tactile sur mobile (si disponible)
+    if ('vibrate' in navigator) {
+        navigator.vibrate(50); // 50ms de vibration
+    }
+    
+    // 3. Effet sonore léger (optionnel - commenté par défaut)
+    // playClickSound();
+    
     // L'œuvre est-elle vraiment de cet artiste ?
     const isCorrectArtist = artwork.nom === artistName;
     
@@ -128,4 +145,23 @@ function handleAnswerArtistMode(buttonIndex) {
     setTimeout(() => {
         window.nextQuestion();
     }, 800);  // Réduit de 1500ms à 800ms
+}
+
+// Fonction optionnelle pour un son de clic (si souhaité)
+function playClickSound() {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.value = 800; // Fréquence du son
+    oscillator.type = 'sine';
+    
+    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.1);
 }

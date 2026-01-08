@@ -613,3 +613,79 @@ html, body {
 .progress-bar {
     transition: width 0.5s ease;
 }
+
+/* ========================================
+   FEEDBACK VISUEL AU CLIC - MODE ARTISTE
+   ======================================== */
+
+/* Animation au clic sur les boutons artistes */
+.artist-btn.clicked {
+    animation: buttonClick 0.3s ease-out;
+    transform-origin: center;
+}
+
+@keyframes buttonClick {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.95);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Alternative: Effet de pulsation */
+.artist-btn.clicked-pulse {
+    animation: buttonPulse 0.4s ease-out;
+}
+
+@keyframes buttonPulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.7);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 10px rgba(13, 110, 253, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(13, 110, 253, 0);
+    }
+}
+
+/* Alternative: Effet de highlight */
+.artist-btn.clicked-highlight {
+    animation: buttonHighlight 0.5s ease-out;
+}
+
+@keyframes buttonHighlight {
+    0% {
+        background-color: inherit;
+    }
+    25% {
+        background-color: rgba(13, 110, 253, 0.3);
+    }
+    100% {
+        background-color: inherit;
+    }
+}
+
+/* Effet de feedback combiné (par défaut) */
+.artist-btn {
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.artist-btn:active {
+    transform: scale(0.97);
+}
+
+/* Amélioration du hover pour plus de feedback */
+.artist-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
